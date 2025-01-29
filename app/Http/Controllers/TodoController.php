@@ -4,20 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Todo;
 use Illuminate\Http\Request;
-use App\Interfaces\TodoInterface;
+use App\Services\TodoService;
 
 class TodoController extends Controller
 {
-    public $todoInterface;
+    public $todoService;
 
-    public function __construct(TodoInterface $todoInterface)
+    public function __construct(TodoService $todoService)
     {
-        $this->todoInterface = $todoInterface;
+        $this->todoService = $todoService;
     }
 
     public function index()
     {
-        $todos= $this->todoInterface->getTodos();
+        $todos = $this->todoService->getTodos();
         return view('todo.index', compact('todos'));
     }
 
@@ -28,7 +28,7 @@ class TodoController extends Controller
 
     public function store(Request $request)
     {
-        $this->todoInterface->saveTodo($request);
+        $this->todoService->saveTodo($request);
         return back()->with('success');
     }
 
@@ -39,13 +39,13 @@ class TodoController extends Controller
 
     public function update(Request $request, Todo $todo)
     {
-        $todo->update($request->all());
-        return redirect('/todo');
-    }
+        $this->todoService->editTodo($request, $todo);
+        return redirect('/todo')->with('success', 'Todo updated successfully');
+    }    
 
     public function destroy(Todo $todo)
     {
-        $this->todoInterface->DeleteTodo($todo);
+        $this->todoService->deleteTodo($todo);
         return back()->with('success');
     }
 }

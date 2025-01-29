@@ -7,9 +7,6 @@ use App\Interfaces\TodoInterface;
 
 class TodoRepository implements TodoInterface
 {
-    /**
-     * Create a new class instance.
-     */
     public function __construct()
     {
         //
@@ -21,19 +18,19 @@ class TodoRepository implements TodoInterface
         return Todo::all();
     }
 
-    // Saving the Todo
-    public function saveTodo($request)
+    // Saving Todo
+    public function saveTodo($todo)
     {
-        Todo::create($request->all());
+        return Todo::create($todo);
     }
 
     // Edit Todo
-    public function editTodo($request, $todo)
+    public function editTodo($todo, $request)
     {
-        $todp->update($request->all());
+        $todo->update($request);
     }
 
-    // Delete the Todo
+    // Delete Todo
     public function deleteTodo($todo)
     {
         $todo->delete();

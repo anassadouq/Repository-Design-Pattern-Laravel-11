@@ -19,7 +19,7 @@
             <input type="text" name="description" required>
         </div>
         <button type="submit">Submit</button>
-    </form>
+    </form><br><br>
 
     <!-- List Todos -->
     <table>
