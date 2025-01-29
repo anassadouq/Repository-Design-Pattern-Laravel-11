@@ -3,64 +3,49 @@
 namespace App\Http\Controllers;
 
 use App\Models\Todo;
-use App\Http\Requests\StoreTodoRequest;
-use App\Http\Requests\UpdateTodoRequest;
+use Illuminate\Http\Request;
+use App\Interfaces\TodoInterface;
 
 class TodoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public $todoInterface;
+
+    public function __construct(TodoInterface $todoInterface)
     {
-        //
+        $this->todoInterface = $todoInterface;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function index()
+    {
+        $todos= $this->todoInterface->getTodos();
+        return view('todo.index', compact('todos'));
+    }
+
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreTodoRequest $request)
+    public function store(Request $request)
     {
-        //
+        $this->todoInterface->saveTodo($request);
+        return back()->with('success');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Todo $todo)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Todo $todo)
     {
-        //
+        return view('todo.edit', compact('todo'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateTodoRequest $request, Todo $todo)
+    public function update(Request $request, Todo $todo)
     {
-        //
+        $todo->update($request->all());
+        return redirect('/todo');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Todo $todo)
     {
-        //
+        $this->todoInterface->DeleteTodo($todo);
+        return back()->with('success');
     }
 }
