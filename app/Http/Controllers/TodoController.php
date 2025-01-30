@@ -28,10 +28,13 @@ class TodoController extends Controller
 
     public function store(Request $request)
     {
-        $this->todoService->saveTodo($request);
-        return back()->with('success');
+        $todo = $this->todoService->saveTodo($request->all()); // Ensure we pass data
+        if ($todo) {
+            return back()->with('success', 'Todo has been created');
+        }
+        return back()->with('error', 'Unable to create Todo');
     }
-
+    
     public function edit(Todo $todo)
     {
         return view('todo.edit', compact('todo'));
@@ -39,13 +42,19 @@ class TodoController extends Controller
 
     public function update(Request $request, Todo $todo)
     {
-        $this->todoService->editTodo($request, $todo);
-        return redirect('/todo')->with('success', 'Todo updated successfully');
-    }    
+        $updatedTodo = $this->todoService->editTodo($todo, $request->all());
+        if ($updatedTodo) {
+            return redirect('/todo')->with('success', 'Todo updated successfully');
+        }
+        return redirect('/todo')->with('error', 'Unable to update Todo');
+    }       
 
     public function destroy(Todo $todo)
     {
-        $this->todoService->deleteTodo($todo);
-        return back()->with('success');
+        $deleteTodo = $this->todoService->deleteTodo($todo);
+        if ($deleteTodo){
+            return back()->with('success', 'Todo deleted successfully');
+        }
+        return back()->with('error', 'Unable to delete Todo');
     }
 }

@@ -11,7 +11,7 @@ interface TodoInterface
     public function saveTodo($request);
 
     // Edit Todo
-    public function editTodo($request, $todo);
+    public function editTodo($todo, $request);
 
     // Delete Todo
     public function deleteTodo($todo);

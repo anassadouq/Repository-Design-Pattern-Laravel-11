@@ -22,17 +22,19 @@ class TodoRepository implements TodoInterface
     public function saveTodo($todo)
     {
         return Todo::create($todo);
-    }
+    }    
 
     // Edit Todo
     public function editTodo($todo, $request)
     {
         $todo->update($request);
-    }
+        return $todo;
+    }    
 
     // Delete Todo
     public function deleteTodo($todo)
     {
         $todo->delete();
+        return $todo;
     }
 }

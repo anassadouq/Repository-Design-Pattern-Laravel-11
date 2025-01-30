@@ -20,17 +20,15 @@ class TodoService
     }
 
     // Save Todo
-    public function saveTodo($request)
+    public function saveTodo($data)
     {
-        // Save Todo
-        $this->todoInterface->saveTodo($request->all());
-    }
+        return $this->todoInterface->saveTodo($data); // Return saved Todo
+    }    
 
-    public function editTodo($request, $todo)
+    public function editTodo($todo, $request)
     {
-        // Edit Todo
-        $this->todoInterface->editTodo($todo, $request->all());
-    }
+        return $this->todoInterface->editTodo($todo, $request);
+    }    
 
     public function deleteTodo($todo)
     {
